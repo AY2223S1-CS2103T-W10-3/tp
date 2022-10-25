@@ -156,6 +156,4 @@ public class UniqueApplicantList implements Iterable<Applicant> {
         }
         return true;
     }
-
-
 }

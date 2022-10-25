@@ -15,9 +15,8 @@ import seedu.trackascholar.model.applicant.ApplicationStatus;
 import seedu.trackascholar.model.applicant.Email;
 import seedu.trackascholar.model.applicant.Name;
 import seedu.trackascholar.model.applicant.Phone;
-import seedu.trackascholar.model.applicant.Pin;
 import seedu.trackascholar.model.applicant.Scholarship;
-import seedu.trackascholar.model.tag.Tag;
+import seedu.trackascholar.model.major.Major;
 
 /**
  * Jackson-friendly version of {@link Applicant}.
@@ -32,9 +31,7 @@ class JsonAdaptedApplicant {
 
     private final String scholarship;
     private final String applicationStatus;
-
-    private final boolean hasPinned;
-    private final List<JsonAdaptedTag> tagged = new ArrayList<>();
+    private final List<JsonAdaptedMajor> tagged = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedApplicant} with the given applicant details.
@@ -45,14 +42,12 @@ class JsonAdaptedApplicant {
                                 @JsonProperty("email") String email,
                                 @JsonProperty("scholarship") String scholarship,
                                 @JsonProperty("applicationStatus") String applicationStatus,
-                                @JsonProperty("tagged") List<JsonAdaptedTag> tagged,
-                                @JsonProperty("hasPinned") boolean hasPinned) {
+                                @JsonProperty("tagged") List<JsonAdaptedMajor> tagged) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.scholarship = scholarship;
         this.applicationStatus = applicationStatus;
-        this.hasPinned = hasPinned;
 
         if (tagged != null) {
             this.tagged.addAll(tagged);
@@ -68,9 +63,8 @@ class JsonAdaptedApplicant {
         email = source.getEmail().value;
         scholarship = source.getScholarship().scholarship;
         applicationStatus = source.getApplicationStatus().applicationStatus;
-        hasPinned = source.getPin().getHasPinned();
-        tagged.addAll(source.getTags().stream()
-                .map(JsonAdaptedTag::new)
+        tagged.addAll(source.getMajors().stream()
+                .map(JsonAdaptedMajor::new)
                 .collect(Collectors.toList()));
     }
 
@@ -80,9 +74,9 @@ class JsonAdaptedApplicant {
      * @throws IllegalValueException if there were any data constraints violated in the adapted applicant.
      */
     public Applicant toModelType() throws IllegalValueException {
-        final List<Tag> applicantTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tagged) {
-            applicantTags.add(tag.toModelType());
+        final List<Major> applicantMajors = new ArrayList<>();
+        for (JsonAdaptedMajor major : tagged) {
+            applicantMajors.add(major.toModelType());
         }
 
         if (name == null) {
@@ -127,10 +121,8 @@ class JsonAdaptedApplicant {
         }
         final ApplicationStatus modelApplicationStatus = new ApplicationStatus(applicationStatus);
 
-        final Set<Tag> modelTags = new HashSet<>(applicantTags);
-        final Pin modelPin = new Pin(hasPinned);
-        return new Applicant(modelName, modelPhone, modelEmail,
-                modelScholarship, modelApplicationStatus, modelTags, modelPin);
+        final Set<Major> modelMajors = new HashSet<>(applicantMajors);
+        return new Applicant(modelName, modelPhone, modelEmail, modelScholarship, modelApplicationStatus, modelMajors);
 
     }
 

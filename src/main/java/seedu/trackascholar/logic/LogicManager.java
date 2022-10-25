@@ -65,11 +65,6 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ObservableList<Applicant> getPinnedApplicantList() {
-        return model.getPinnedApplicantList();
-    }
-
-    @Override
     public Path getTrackAScholarFilePath() {
         return model.getTrackAScholarFilePath();
     }
