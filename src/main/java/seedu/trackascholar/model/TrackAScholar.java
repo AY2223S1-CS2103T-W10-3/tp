@@ -84,6 +84,7 @@ public class TrackAScholar implements ReadOnlyTrackAScholar {
      */
     public void setApplicant(Applicant target, Applicant editedApplicant) {
         requireNonNull(editedApplicant);
+
         applicants.setApplicant(target, editedApplicant);
     }
 
@@ -112,7 +113,6 @@ public class TrackAScholar implements ReadOnlyTrackAScholar {
         applicants.sort(comparator);
     }
 
-
     //// util methods
 
     @Override
@@ -137,6 +137,4 @@ public class TrackAScholar implements ReadOnlyTrackAScholar {
     public int hashCode() {
         return applicants.hashCode();
     }
-
-
 }

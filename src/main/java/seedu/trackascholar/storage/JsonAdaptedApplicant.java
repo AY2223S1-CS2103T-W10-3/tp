@@ -15,7 +15,6 @@ import seedu.trackascholar.model.applicant.ApplicationStatus;
 import seedu.trackascholar.model.applicant.Email;
 import seedu.trackascholar.model.applicant.Name;
 import seedu.trackascholar.model.applicant.Phone;
-import seedu.trackascholar.model.applicant.Pin;
 import seedu.trackascholar.model.applicant.Scholarship;
 import seedu.trackascholar.model.major.Major;
 
@@ -32,11 +31,7 @@ class JsonAdaptedApplicant {
 
     private final String scholarship;
     private final String applicationStatus;
-
-    private final boolean hasPinned;
-
     private final List<JsonAdaptedMajor> tagged = new ArrayList<>();
-
 
     /**
      * Constructs a {@code JsonAdaptedApplicant} with the given applicant details.
@@ -47,14 +42,12 @@ class JsonAdaptedApplicant {
                                 @JsonProperty("email") String email,
                                 @JsonProperty("scholarship") String scholarship,
                                 @JsonProperty("applicationStatus") String applicationStatus,
-                                @JsonProperty("tagged") List<JsonAdaptedMajor> tagged,
-                                @JsonProperty("hasPinned") boolean hasPinned) {
+                                @JsonProperty("tagged") List<JsonAdaptedMajor> tagged) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.scholarship = scholarship;
         this.applicationStatus = applicationStatus;
-        this.hasPinned = hasPinned;
 
         if (tagged != null) {
             this.tagged.addAll(tagged);
@@ -70,7 +63,6 @@ class JsonAdaptedApplicant {
         email = source.getEmail().value;
         scholarship = source.getScholarship().scholarship;
         applicationStatus = source.getApplicationStatus().applicationStatus;
-        hasPinned = source.getPin().getHasPinned();
         tagged.addAll(source.getMajors().stream()
                 .map(JsonAdaptedMajor::new)
                 .collect(Collectors.toList()));
@@ -128,10 +120,9 @@ class JsonAdaptedApplicant {
             throw new IllegalValueException(ApplicationStatus.MESSAGE_CONSTRAINTS);
         }
         final ApplicationStatus modelApplicationStatus = new ApplicationStatus(applicationStatus);
+
         final Set<Major> modelMajors = new HashSet<>(applicantMajors);
-        final Pin modelPin = new Pin(hasPinned);
-        return new Applicant(modelName, modelPhone, modelEmail, modelScholarship,
-                modelApplicationStatus, modelMajors, modelPin);
+        return new Applicant(modelName, modelPhone, modelEmail, modelScholarship, modelApplicationStatus, modelMajors);
 
     }
 
